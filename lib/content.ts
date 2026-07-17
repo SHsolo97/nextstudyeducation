@@ -27,7 +27,7 @@ export const nav = [
 export const hero = {
   eyebrow: "Mentor-led BIM upskilling",
   headline: ["Train for the BIM career", "modern construction is built on."],
-  sub: "Nextudy turns civil engineers, architects, and graduates into industry-ready BIM professionals through mentor-led, project-based training.",
+  sub: "Nextudy turns civil engineers, mechanical engineers, architects, and graduates into industry-ready BIM professionals through mentor-led, project-based training.",
   primaryCta: { label: "Get the course syllabus", href: "#lead" },
   secondaryCta: { label: "Explore programs", href: "#programs" },
 };
@@ -313,6 +313,85 @@ export const faqs: Faq[] = [
     a: "Institutes teach the buttons. Nextudy teaches the workflow, with mentors who work on live projects and a focus on being job-ready, not just software-aware.",
   },
 ];
+
+export const recognition = {
+  eyebrow: "Trusted by the industry",
+  headline: ["Recognized across the", "AEC ecosystem."],
+  cards: [
+    {
+      index: "01",
+      metric: "Recognized by 150+",
+      highlight: "AEC companies",
+      copy: "Our alumni work at leading architecture, engineering, and construction firms across India and GCC countries.",
+    },
+    {
+      index: "02",
+      metric: "Top 5 BIM institute",
+      highlight: "Industry-experienced faculties",
+      copy: "Rated among the top BIM institutes in India for mentor-led training by working professionals.",
+    },
+    {
+      index: "03",
+      metric: "Exclusive community of",
+      highlight: "100+ BIM professionals",
+      copy: "Premium access to a growing network of BIM practitioners — ask questions, share work, and find opportunities.",
+    },
+    {
+      index: "04",
+      metric: "India's #1 BIM institute",
+      highlight: "Industry recognition",
+      copy: "Awarded the best performing BIM institute in India for training quality and graduate readiness.",
+    },
+  ],
+};
+
+export type FlagshipCategoryTab = {
+  id: "bim" | "computational";
+  label: string;
+};
+
+export type FlagshipDetail = {
+  label: string;
+  value: string;
+};
+
+export const flagship: {
+  eyebrow: string;
+  headline: [string, string];
+  sub: string;
+  categoryTabs: readonly FlagshipCategoryTab[];
+  activeCategory: FlagshipCategoryTab["id"];
+  course: {
+    badge: string;
+    name: string;
+    image: string;
+    imageAlt: string;
+    details: FlagshipDetail[];
+    cta: { label: string; href: string };
+  };
+} = {
+  eyebrow: "Our Courses",
+  headline: ["The future of AEC", "begins with you."],
+  sub: "Get closer to your professional goals through global, expert-led certification programs in Architecture, Engineering, and Design.",
+  categoryTabs: [
+    { id: "bim", label: "BIM Program" },
+    { id: "computational", label: "Computational" },
+  ],
+  activeCategory: "bim",
+  course: {
+    badge: "Flagship Program",
+    name: "BIM Foundational Bridge Course",
+    image: "/images/flagship-bim.jpg",
+    imageAlt: "Coordinated BIM model of an architectural project",
+    details: [
+      { label: "Program Duration", value: "7 Months, Online" },
+      { label: "Application Deadline", value: "Jun 13th" },
+      { label: "Course Ratings", value: "4.6 ★ ★ ★ ★ ☆" },
+      { label: "Learners Enrolled", value: "7254" },
+    ],
+    cta: { label: "Learn More", href: "#lead" },
+  },
+};
 
 export const professions = [
   "Student or fresh graduate",
