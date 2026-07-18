@@ -348,6 +348,7 @@ export const recognition = {
 export type FlagshipCategoryTab = {
   id: "bim" | "computational";
   label: string;
+  href: string | null;
 };
 
 export type FlagshipDetail = {
@@ -374,8 +375,8 @@ export const flagship: {
   headline: ["The future of AEC", "begins with you."],
   sub: "Get closer to your professional goals through global, expert-led certification programs in Architecture, Engineering, and Design.",
   categoryTabs: [
-    { id: "bim", label: "BIM Program" },
-    { id: "computational", label: "Computational" },
+    { id: "bim", label: "Flagship Program", href: null },
+    { id: "computational", label: "Other Programs", href: "#programs" },
   ],
   activeCategory: "bim",
   course: {

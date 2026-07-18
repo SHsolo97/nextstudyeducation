@@ -141,26 +141,45 @@ export default function FlagshipProgram() {
             {flagship.sub}
           </p>
 
-          {/* Category tab pills — visual only for now (single flagship) */}
+          {/* Category tab pills — "Flagship Program" filled with Nextudy
+              Vibrant Orange; "Other Programs" is semi-transparent and scrolls
+              to the #programs section when activated. */}
           <div
             role="tablist"
             aria-label="Course category"
-            className="fp-fade mx-auto mt-10 inline-flex items-center gap-1 rounded-full border border-line bg-ink-800 p-1.5"
+            className="fp-fade mx-auto mt-10 inline-flex items-center gap-1 rounded-full border border-white/10 bg-ink-800/60 p-1.5 backdrop-blur"
           >
             {flagship.categoryTabs.map((tab) => {
               const active = tab.id === flagship.activeCategory;
+              const base =
+                "rounded-full px-6 py-2.5 font-display text-sm font-medium tracking-tight transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#f9a11d]/60";
+              const activeCls =
+                "bg-[#f9a11d] text-[#1a0f00] shadow-[0_0_0_1px_rgba(249,161,29,0.35)]";
+              const inactiveCls =
+                "bg-transparent text-bone/70 hover:text-bone";
+
+              const classes = `${base} ${active ? activeCls : inactiveCls}`;
+
+              if (tab.href) {
+                return (
+                  <a
+                    key={tab.id}
+                    href={tab.href}
+                    role="tab"
+                    aria-selected={!active ? false : undefined}
+                    className={classes}
+                  >
+                    {tab.label}
+                  </a>
+                );
+              }
               return (
                 <button
                   key={tab.id}
                   type="button"
                   role="tab"
                   aria-selected={active}
-                  className={
-                    "rounded-full px-6 py-2.5 font-display text-sm font-medium tracking-tight transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 " +
-                    (active
-                      ? "bg-ink-700 text-bone"
-                      : "text-mute hover:text-bone")
-                  }
+                  className={classes}
                 >
                   {tab.label}
                 </button>
@@ -169,10 +188,11 @@ export default function FlagshipProgram() {
           </div>
         </div>
 
-        {/* Flagship course card */}
+        {/* Flagship course card — body tinted in Nextudy Vibrant Orange so the
+            flagship announcement reads as the literal hero of the section. */}
         <article
           ref={card}
-          className="fp-card group relative mx-auto mt-14 max-w-md overflow-hidden rounded-3xl border border-line bg-ink-800 p-3 transition-[transform,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform hover:-translate-y-1.5 hover:border-accent/50 md:mt-20"
+          className="fp-card group relative mx-auto mt-14 max-w-md overflow-hidden rounded-3xl border border-[#f9a11d]/70 bg-[#f9a11d] p-5 shadow-[0_30px_80px_-30px_rgba(249,161,29,0.55)] transition-[transform,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform hover:-translate-y-1.5 hover:border-[#f9a11d] md:mt-20"
         >
           {/* Visual — stylised sky-and-skyline composition with a blueprint
               grid overlay, used in lieu of a real course hero image. */}
@@ -227,24 +247,24 @@ export default function FlagshipProgram() {
                 </g>
               </svg>
 
-              <span className="absolute left-4 top-4 rounded-full border border-line/60 bg-ink-700/70 px-4 py-1.5 font-display text-xs font-medium tracking-tight text-bone backdrop-blur">
+              <span className="absolute left-4 top-4 rounded-full bg-white/90 px-4 py-1.5 font-display text-xs font-semibold tracking-tight text-[#7a3b00] shadow-sm">
                 {c.badge}
               </span>
             </div>
           </div>
 
-          <div className="px-5 pb-6 pt-6">
-            <h3 className="font-display text-[1.65rem] font-bold leading-[1.05] tracking-tight text-bone md:text-[1.9rem]">
+          <div className="px-3 pb-4 pt-5">
+            <h3 className="font-display text-[1.7rem] font-bold leading-[1.05] tracking-tight text-[#1a0f00] md:text-[1.95rem]">
               {c.name}
             </h3>
 
             <div className="mt-7 grid grid-cols-2 gap-x-6 gap-y-6">
               {c.details.map((d) => (
                 <div key={d.label} className="fp-detail">
-                  <p className="font-display text-xs font-medium tracking-wide text-faint">
+                  <p className="font-display text-xs font-medium tracking-wide text-[#1a0f00]/65">
                     {d.label}
                   </p>
-                  <p className="mt-1 font-display text-base font-semibold tracking-tight text-bone">
+                  <p className="mt-1 font-display text-base font-semibold tracking-tight text-[#1a0f00]">
                     {d.value}
                   </p>
                 </div>
@@ -253,10 +273,10 @@ export default function FlagshipProgram() {
 
             <a
               href={c.cta.href}
-              className="mt-7 flex items-center justify-center gap-2 rounded-2xl border border-line bg-ink-700 px-6 py-4 font-display text-sm font-semibold tracking-tight text-bone transition-colors duration-300 hover:border-accent/60 hover:bg-ink-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+              className="mt-7 flex items-center justify-center gap-2 rounded-2xl bg-[#1a0f00] px-6 py-4 font-display text-sm font-semibold tracking-tight text-[#f9a11d] transition-colors duration-300 hover:bg-black focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1a0f00]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f9a11d]"
             >
               {c.cta.label}
-              <ArrowRight size={16} className="text-accent" />
+              <ArrowRight size={16} className="text-[#f9a11d]" />
               <span className="sr-only">: {c.name}</span>
             </a>
           </div>
