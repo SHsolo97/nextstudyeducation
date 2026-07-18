@@ -7,16 +7,18 @@ export const brand = {
   name: "Nextudy",
   wordmark: "nextudy",
   tagline: "Skill up now",
-  email: "hello@nextudyeducation.com",
-  phone: "+91 90000 00000", // PLACEHOLDER
+  email: "info@nextudyeducation.com",
+  phone: "+91 95008 32464",
   socials: [
-    { label: "LinkedIn", href: "#" },
-    { label: "Instagram", href: "#" },
-    { label: "YouTube", href: "#" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/company/nextudy/" },
+    { label: "Instagram", href: "https://www.instagram.com/nextudyeducation/" },
+    { label: "X", href: "https://x.com/NextudyOfficial" },
   ],
 };
 
 export const nav = [
+  { label: "About Us", href: "/about" },
+  { label: "Nextudy Elevate", href: "/elevate" },
   { label: "The shift", href: "#shift" },
   { label: "Programs", href: "#programs" },
   { label: "Mentors", href: "#mentors" },
