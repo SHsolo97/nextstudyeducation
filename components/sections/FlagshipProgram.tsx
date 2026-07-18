@@ -188,11 +188,15 @@ export default function FlagshipProgram() {
           </div>
         </div>
 
-        {/* Flagship course card — body tinted in Nextudy Vibrant Orange so the
-            flagship announcement reads as the literal hero of the section. */}
+        {/* Flagship course card — same dark `ink-800` surface, border, and
+            hover idiom as the Recognition cards so it reads as part of the
+            same system. The orange is reserved for accents (badge pill,
+            hairline under the title, CTA) and a single warm halo behind the
+            card so the flagship announcement still feels like the hero
+            without breaking the cinematic palette. */}
         <article
           ref={card}
-          className="fp-card group relative mx-auto mt-14 max-w-md overflow-hidden rounded-3xl border border-[#f9a11d]/70 bg-[#f9a11d] p-5 shadow-[0_30px_80px_-30px_rgba(249,161,29,0.55)] transition-[transform,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform hover:-translate-y-1.5 hover:border-[#f9a11d] md:mt-20"
+          className="fp-card group relative mx-auto mt-14 max-w-md overflow-hidden rounded-3xl border border-line bg-ink-800 p-3 transition-[transform,border-color,background-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform hover:-translate-y-1.5 hover:border-accent/50 hover:bg-ink-700 md:mt-20"
         >
           {/* Visual — stylised sky-and-skyline composition with a blueprint
               grid overlay, used in lieu of a real course hero image. */}
@@ -247,24 +251,31 @@ export default function FlagshipProgram() {
                 </g>
               </svg>
 
-              <span className="absolute left-4 top-4 rounded-full bg-white/90 px-4 py-1.5 font-display text-xs font-semibold tracking-tight text-[#7a3b00] shadow-sm">
+              <span className="absolute left-4 top-4 rounded-full bg-accent px-4 py-1.5 font-display text-xs font-semibold tracking-tight text-accent-ink shadow-sm">
                 {c.badge}
               </span>
             </div>
           </div>
 
-          <div className="px-3 pb-4 pt-5">
-            <h3 className="font-display text-[1.7rem] font-bold leading-[1.05] tracking-tight text-[#1a0f00] md:text-[1.95rem]">
+          <div className="px-5 pb-6 pt-7">
+            <h3 className="font-display text-[1.65rem] font-bold leading-[1.05] tracking-tight text-bone md:text-[1.9rem]">
               {c.name}
             </h3>
 
-            <div className="mt-7 grid grid-cols-2 gap-x-6 gap-y-6">
+            {/* Accent rule under the title — same vocabulary as the Programs
+                card "You walk away with" hairline. */}
+            <div className="mt-5 flex items-center gap-2.5">
+              <span className="h-px w-8 bg-accent" aria-hidden="true" />
+              <span className="eyebrow text-faint">Flagship · details</span>
+            </div>
+
+            <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-6">
               {c.details.map((d) => (
                 <div key={d.label} className="fp-detail">
-                  <p className="font-display text-xs font-medium tracking-wide text-[#1a0f00]/65">
+                  <p className="font-display text-xs font-medium tracking-wide text-faint">
                     {d.label}
                   </p>
-                  <p className="mt-1 font-display text-base font-semibold tracking-tight text-[#1a0f00]">
+                  <p className="mt-1 font-display text-base font-semibold tracking-tight text-bone">
                     {d.value}
                   </p>
                 </div>
@@ -273,14 +284,30 @@ export default function FlagshipProgram() {
 
             <a
               href={c.cta.href}
-              className="mt-7 flex items-center justify-center gap-2 rounded-2xl bg-[#1a0f00] px-6 py-4 font-display text-sm font-semibold tracking-tight text-[#f9a11d] transition-colors duration-300 hover:bg-black focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1a0f00]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f9a11d]"
+              className="mt-7 flex items-center justify-center gap-2 rounded-2xl border border-accent/40 bg-accent/10 px-6 py-4 font-display text-sm font-semibold tracking-tight text-accent transition-colors duration-300 hover:border-accent hover:bg-accent hover:text-accent-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
             >
               {c.cta.label}
-              <ArrowRight size={16} className="text-[#f9a11d]" />
+              <ArrowRight size={16} className="transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5" />
               <span className="sr-only">: {c.name}</span>
             </a>
           </div>
         </article>
+
+        {/* Single warm halo behind the card so the flagship still reads as
+            the hero without breaking the cinematic palette. */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-[55%] z-0 h-[480px] w-[680px] -translate-x-1/2 -translate-y-1/2 md:h-[560px] md:w-[760px]"
+          aria-hidden="true"
+        >
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle, color-mix(in oklch, #f9a11d 24%, transparent) 0%, transparent 70%)",
+              filter: "blur(40px)",
+            }}
+          />
+        </div>
       </div>
     </section>
   );
