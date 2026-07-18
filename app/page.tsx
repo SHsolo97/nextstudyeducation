@@ -27,12 +27,12 @@ export default function Home() {
         <Hero />
         <Recognition />
         <FlagshipProgram />
+        <LearningJourney />
         <DisciplineMarquee />
         <TheShift />
         <TheGap />
         <WhyNextudy />
         <Programs />
-        <LearningJourney />
         <Mentors />
         <Outcomes />
         <Testimonials />
