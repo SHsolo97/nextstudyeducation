@@ -172,7 +172,7 @@ export default function Programs() {
             {/* ---- Leading heading panel ------------------------------------ */}
             <div className="flex w-[85vw] max-w-[31rem] shrink-0 snap-center flex-col justify-center pr-2 md:w-[34rem] md:max-w-none md:pr-12">
               <span className="pg-head-fade">
-                <Kicker>Programs</Kicker>
+                <Kicker>Our Programs</Kicker>
               </span>
 
               <h2
@@ -180,21 +180,20 @@ export default function Programs() {
                 id="programs-title"
                 className="reveal-up mt-6 font-display text-[clamp(2.4rem,4.4vw,3.6rem)] font-bold leading-[1.02] tracking-[-0.025em] text-bone"
               >
-                Five ways in.
+                Choose Your 
                 <br />
-                <span className="text-accent">One workflow.</span>
+                <span className="text-accent">Growth Journey.</span>
               </h2>
 
               <p className="pg-head-fade mt-6 max-w-[34ch] text-lg leading-relaxed text-mute">
-                Five programs, one through-line. Start where you stand and grow
-                into the coordinated workflow employers are hiring for.
+                Multiple programs, one destination. Begin where you are and develop the skills, mindset, and industry readiness employers actively seek.
               </p>
 
               <div className="pg-head-fade mt-12 flex items-center gap-4 text-faint">
                 <span className="eyebrow">Explore</span>
                 <span className="h-px w-12 bg-line" aria-hidden="true" />
                 <span className="font-display text-sm tracking-[0.18em]">
-                  01 / 05
+                  01 / 07
                 </span>
                 <ArrowRight
                   size={18}
@@ -205,64 +204,142 @@ export default function Programs() {
             </div>
 
             {/* ---- Program cards -------------------------------------------- */}
-            {programs.map((p) => (
-              <article
-                key={p.id}
-                className="group relative flex w-[80vw] max-w-[21rem] shrink-0 snap-center flex-col rounded-3xl border border-line bg-ink-800 p-8 transition-[transform,border-color,background-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform hover:-translate-y-1.5 hover:border-accent/50 hover:bg-ink-700 has-[a:focus-visible]:-translate-y-1.5 has-[a:focus-visible]:border-accent/60 has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-accent/40 sm:w-[22rem] sm:max-w-none sm:min-h-[28rem] md:w-[23.5rem]"
-              >
-                <div className="flex items-start justify-between">
-                  <span className="font-display text-[3.25rem] font-bold leading-none text-accent">
-                    {p.index}
-                  </span>
-                  <span className="mt-2 h-2 w-2 rounded-full bg-line transition-colors duration-500 group-hover:bg-accent" aria-hidden="true" />
-                </div>
-
-                <h3 className="mt-6 font-display text-[1.75rem] font-medium leading-[1.05] tracking-tight text-bone md:text-[2rem]">
-                  {p.name}
-                </h3>
-
-                <p className="mt-3 text-sm text-faint">For {p.for}</p>
-
-                <p className="mt-5 text-mute leading-relaxed">{p.summary}</p>
-
-                <ul className="mt-6 flex flex-wrap gap-2">
-                  {p.tools.map((t) => (
-                    <li
-                      key={t}
-                      className="rounded-full border border-line px-3 py-1 text-xs text-mute"
-                    >
-                      {t}
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-auto pt-7">
-                  <div className="hairline" />
-
-                  <div className="mt-6 flex items-center gap-2.5">
-                    <span className="h-px w-6 bg-accent" aria-hidden="true" />
-                    <span className="eyebrow text-faint">
-                      You walk away with
-                    </span>
-                  </div>
-                  <p className="mt-3 font-display text-[1.1rem] font-medium leading-snug text-bone">
-                    {p.outcome}
-                  </p>
-
+            {programs.map((p) => {
+              const isFlagship = !!p.flagship;
+              return (
+                <article
+                  key={p.id}
+                  className={
+                    "group relative flex w-[80vw] max-w-[21rem] shrink-0 snap-center flex-col rounded-3xl border p-7 transition-[transform,border-color,background-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform hover:-translate-y-1.5 sm:w-[22rem] sm:max-w-none sm:min-h-[30rem] md:w-[23.5rem] " +
+                    (isFlagship
+                      ? "border-[#f9a11d] bg-[#f9a11d] text-[#1a0f00] shadow-[0_30px_80px_-30px_rgba(249,161,29,0.55)] hover:border-[#f9a11d]"
+                      : "border-white/10 bg-ink-800/40 text-bone backdrop-blur-md hover:border-accent/50 hover:bg-ink-800/60")
+                  }
+                >
+                  {/* Whole-card click target — each card links to the lead form. */}
                   <a
                     href="#lead"
-                    className="mt-6 inline-flex items-center gap-2 font-display text-sm font-medium tracking-tight text-accent outline-none after:absolute after:inset-0 after:z-10 after:content-[''] focus:outline-none focus-visible:outline-none"
+                    aria-label={`${p.name} — talk to a mentor`}
+                    className="absolute inset-0 z-10 rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+                  />
+
+                  <div className="relative z-0 flex items-start justify-between">
+                    <span
+                      className={
+                        "font-display text-[2.75rem] font-bold leading-none " +
+                        (isFlagship ? "text-[#1a0f00]" : "text-accent")
+                      }
+                    >
+                      {p.index}
+                    </span>
+
+                    {isFlagship ? (
+                      <span className="rounded-full bg-[#1a0f00] px-3 py-1 font-display text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[#f9a11d]">
+                        Flagship
+                      </span>
+                    ) : (
+                      <span className="rounded-full border border-white/15 px-3 py-1 font-display text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-mute">
+                        {p.level}
+                      </span>
+                    )}
+                  </div>
+
+                  <h3
+                    className={
+                      "mt-5 font-display text-[1.6rem] font-semibold leading-[1.05] tracking-tight md:text-[1.85rem] " +
+                      (isFlagship ? "text-[#1a0f00]" : "text-bone")
+                    }
                   >
-                    Explore this program
-                    <ArrowRight
-                      size={16}
-                      className="transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5"
+                    {p.name}
+                  </h3>
+
+                  <p
+                    className={
+                      "mt-2 text-sm " +
+                      (isFlagship ? "text-[#1a0f00]/65" : "text-faint")
+                    }
+                  >
+                    {p.for}
+                  </p>
+
+                  <p
+                    className={
+                      "mt-5 leading-relaxed " +
+                      (isFlagship ? "text-[#1a0f00]/85" : "text-mute")
+                    }
+                  >
+                    {p.summary}
+                  </p>
+
+                  <ul className="mt-6 flex flex-wrap gap-2">
+                    {p.tools.map((t) => (
+                      <li
+                        key={t}
+                        className={
+                          "rounded-full px-3 py-1 text-xs " +
+                          (isFlagship
+                            ? "border border-[#1a0f00]/25 bg-[#1a0f00]/10 text-[#1a0f00]/85"
+                            : "border border-white/15 bg-white/5 text-mute")
+                        }
+                      >
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-auto pt-7">
+                    <div
+                      className={
+                        "h-px " +
+                        (isFlagship
+                          ? "bg-[#1a0f00]/15"
+                          : "bg-gradient-to-r from-transparent via-line to-transparent")
+                      }
+                      aria-hidden="true"
                     />
-                    <span className="sr-only">: {p.name}</span>
-                  </a>
-                </div>
-              </article>
-            ))}
+
+                    <div className="mt-6 flex items-center gap-2.5">
+                      <span
+                        className={
+                          "h-px w-6 " + (isFlagship ? "bg-[#1a0f00]" : "bg-accent")
+                        }
+                        aria-hidden="true"
+                      />
+                      <span
+                        className={
+                          "eyebrow " +
+                          (isFlagship ? "text-[#1a0f00]/65" : "text-faint")
+                        }
+                      >
+                        You walk away with
+                      </span>
+                    </div>
+                    <p
+                      className={
+                        "mt-3 font-display text-[1.05rem] font-medium leading-snug " +
+                        (isFlagship ? "text-[#1a0f00]" : "text-bone")
+                      }
+                    >
+                      {p.outcome}
+                    </p>
+
+                    <div
+                      className={
+                        "mt-6 inline-flex items-center gap-2 font-display text-sm font-semibold tracking-tight " +
+                        (isFlagship ? "text-[#1a0f00]" : "text-accent")
+                      }
+                      aria-hidden="true"
+                    >
+                      <span>Talk to a mentor</span>
+                      <ArrowRight
+                        size={16}
+                        className="transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5"
+                      />
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
 

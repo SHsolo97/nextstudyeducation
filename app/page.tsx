@@ -3,7 +3,6 @@ import Preloader from "@/components/Preloader";
 import Nav from "@/components/Nav";
 import Hero from "@/components/sections/Hero";
 import Recognition from "@/components/sections/Recognition";
-import FlagshipProgram from "@/components/sections/FlagshipProgram";
 import DisciplineMarquee from "@/components/sections/DisciplineMarquee";
 import TheShift from "@/components/sections/TheShift";
 import TheGap from "@/components/sections/TheGap";
@@ -27,7 +26,6 @@ export default function Home() {
       <main>
         <Hero />
         <Recognition />
-        <FlagshipProgram />
         <LearningJourney />
         <TheGap />
         <WhyNextudy />

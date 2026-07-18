@@ -125,62 +125,119 @@ export type Program = {
   id: string;
   name: string;
   index: string;
+  level: string;
   for: string;
   summary: string;
   tools: string[];
   outcome: string;
+  flagship?: boolean;
 };
 
 export const programs: Program[] = [
   {
-    id: "foundation",
-    name: "BIM Foundation",
+    id: "bim-foundational-bridge",
+    name: "BIM Foundational Bridge Course",
     index: "01",
-    for: "Graduates new to BIM",
+    level: "Beginner to Intermediate",
+    for: "A complete package for graduates new to BIM",
     summary:
-      "Understand what BIM is as a workflow, not just a button. Build your first coordinated model and learn how project information actually flows.",
-    tools: ["Revit basics", "BIM concepts", "Model navigation"],
-    outcome: "A working grasp of BIM workflows and your first model.",
+      "From core concepts to practical understanding, start with the fundamentals and build the foundation that prepares you for the world of BIM with confidence. The certification from this degree is a pre-requisite for many advanced level BIM courses provided here.",
+    tools: [
+      "AutoCAD",
+      "Autodesk Revit",
+      "Navisworks Manage",
+      "Large-scale project",
+      "Career training",
+    ],
+    outcome: "A strong and complete BIM foundation with a clear career direction.",
+    flagship: true,
   },
   {
-    id: "revit-arch",
-    name: "Revit Architecture",
+    id: "autocad-fundamentals",
+    name: "AutoCAD Fundamentals",
     index: "02",
-    for: "Architects and architecture graduates",
+    level: "Beginner",
+    for: "For beginners and graduates",
     summary:
-      "Model and document a building to industry standards. Walls, families, views, sheets, and the documentation set a practice would actually issue.",
-    tools: ["Revit Architecture", "Families", "Documentation"],
-    outcome: "Model and document a building to industry standards.",
+      "Start with the fundamentals of design and drafting by mastering the essentials of AutoCAD through practical skills used across real projects.",
+    tools: ["AutoCAD", "Mini project"],
+    outcome: "Confident drafting skills with industry-ready precision.",
   },
   {
-    id: "revit-struct",
-    name: "Revit Structure",
+    id: "revit-fundamentals",
+    name: "Revit Fundamentals",
     index: "03",
-    for: "Civil and structural engineers",
+    level: "Intermediate",
+    for: "For Architects, Mechanical and Civil Engineers",
     summary:
-      "Take structural intent into a coordinated model. Framing, rebar, and the structural drawings used on real projects.",
-    tools: ["Revit Structure", "Rebar", "Framing"],
-    outcome: "Produce structural models and drawings used on site.",
+      "Start mastering the essentials of Autodesk Revit and discover how modern buildings are designed with efficiency and precision.",
+    tools: ["Autodesk Revit", "Mini project"],
+    outcome: "Practical Revit skills for intelligent model creation.",
   },
   {
-    id: "navisworks",
-    name: "Navisworks Coordination",
+    id: "navisworks-fundamentals",
+    name: "Navisworks Fundamentals",
     index: "04",
-    for: "Anyone moving into BIM coordination",
+    level: "Intermediate",
+    for: "For aspiring BIM coordinators",
     summary:
-      "Federate disciplines, run clash detection, and resolve conflicts before construction. The coordination role employers are short on.",
-    tools: ["Navisworks", "Clash detection", "4D sequencing"],
-    outcome: "Run clash detection across multi-discipline models.",
+      "Build the foundational skills to visualize, coordinate, and streamline workflows across construction projects through Navisworks Manage.",
+    tools: ["Navisworks Manage", "Mini project"],
+    outcome: "Solid project coordination and model review skills.",
   },
   {
-    id: "career-bridge",
-    name: "BIM Career Bridge",
+    id: "advanced-bim-architecture",
+    name: "Advanced BIM Architecture Modeling",
     index: "05",
-    for: "Professionals targeting a BIM role now",
+    level: "Advanced",
+    for: "Upskilling program for BIM Architects",
     summary:
-      "The end-to-end workflow plus the parts that get you hired: a portfolio, mock interviews, and the language to talk about projects with confidence.",
-    tools: ["Full workflow", "Portfolio", "Interview prep"],
-    outcome: "A portfolio and the confidence to interview for BIM roles.",
+      "Move beyond the basics and fully master architectural BIM modeling techniques and build the expertise demanded by modern BIM mega-projects. This program is not recommended for beginners.",
+    tools: [
+      "Autodesk Revit (Arch.)",
+      "Essential plugins & agents",
+      "Workflow techniques",
+      "Free upskilling with Nextudy",
+      "Large-scale project",
+      "Career Support",
+    ],
+    outcome: "Advanced architectural BIM skills for real projects.",
+  },
+  {
+    id: "advanced-bim-structure",
+    name: "Advanced BIM Structure Modeling",
+    index: "06",
+    level: "Advanced",
+    for: "Upskilling program for BIM Civil Engineers",
+    summary:
+      "Take your BIM expertise further with advanced structural modeling workflows built for accuracy and industry relevance. This program is not recommended for beginners.",
+    tools: [
+      "Autodesk Revit (Struct.)",
+      "Essential plugins & agents",
+      "Workflow techniques",
+      "Free upskilling with Nextudy",
+      "Large-scale project",
+      "Career Support",
+    ],
+    outcome: "Strong structural BIM expertise with practical confidence.",
+  },
+  {
+    id: "advanced-bim-mep",
+    name: "Advanced BIM MEP Modeling",
+    index: "07",
+    level: "Advanced",
+    for: "Upskilling program for BIM MEP Engineers",
+    summary:
+      "Take your BIM journey further and learn how complex building services come together with advanced MEP skill built for precision, coordination, and project success. This program is not recommended for beginners.",
+    tools: [
+      "Autodesk Revit (MEP)",
+      "Essential plugins & agents",
+      "Workflow techniques",
+      "Free upskilling with Nextudy",
+      "Large-scale project",
+      "Career Support",
+    ],
+    outcome: "Professional MEP coordination skills for project success.",
   },
 ];
 
@@ -343,55 +400,6 @@ export const recognition = {
       copy: "Awarded the best performing BIM institute in India for training quality and graduate readiness.",
     },
   ],
-};
-
-export type FlagshipCategoryTab = {
-  id: "bim" | "computational";
-  label: string;
-  href: string | null;
-};
-
-export type FlagshipDetail = {
-  label: string;
-  value: string;
-};
-
-export const flagship: {
-  eyebrow: string;
-  headline: [string, string];
-  sub: string;
-  categoryTabs: readonly FlagshipCategoryTab[];
-  activeCategory: FlagshipCategoryTab["id"];
-  course: {
-    badge: string;
-    name: string;
-    image: string;
-    imageAlt: string;
-    details: FlagshipDetail[];
-    cta: { label: string; href: string };
-  };
-} = {
-  eyebrow: "Our Courses",
-  headline: ["The future of AEC", "begins with you."],
-  sub: "Get closer to your professional goals through global, expert-led certification programs in Architecture, Engineering, and Design.",
-  categoryTabs: [
-    { id: "bim", label: "Flagship Program", href: null },
-    { id: "computational", label: "Other Programs", href: "#programs" },
-  ],
-  activeCategory: "bim",
-  course: {
-    badge: "Flagship Program",
-    name: "BIM Foundational Bridge Course",
-    image: "/images/flagship-bim.jpg",
-    imageAlt: "Coordinated BIM model of an architectural project",
-    details: [
-      { label: "Program Duration", value: "7 Months, Online" },
-      { label: "Application Deadline", value: "Jun 13th" },
-      { label: "Course Ratings", value: "4.6 ★ ★ ★ ★ ☆" },
-      { label: "Learners Enrolled", value: "7254" },
-    ],
-    cta: { label: "Learn More", href: "#lead" },
-  },
 };
 
 export const professions = [
