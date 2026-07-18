@@ -26,6 +26,7 @@ export default function Home() {
       <main>
         <Hero />
         <Recognition />
+        <FlagshipProgram />
         <DisciplineMarquee />
         <TheShift />
         <TheGap />
