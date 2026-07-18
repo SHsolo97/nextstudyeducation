@@ -130,7 +130,7 @@ export default function FlagshipProgram() {
           <h2
             ref={headline}
             id="flagship-title"
-            className="reveal-up mt-6 font-display text-[clamp(2rem,4.4vw,3.5rem)] font-bold leading-[0.98] tracking-[-0.025em] text-bone"
+            className="reveal-up mt-6 font-display text-[clamp(2rem,4.4vw,3.5rem)] font-bold leading-[1.02] tracking-[-0.025em] text-bone"
           >
             {flagship.headline[0]}
             <br />

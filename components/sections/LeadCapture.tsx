@@ -227,7 +227,7 @@ export default function LeadCapture() {
             lines={lead.headline}
             trigger
             as="h2"
-            className="mt-6 font-display text-[clamp(2.4rem,5.2vw,4.2rem)] font-bold leading-[0.98] tracking-[-0.025em] text-bone"
+            className="mt-6 font-display text-[clamp(2.4rem,5.2vw,4.2rem)] font-bold leading-[1.02] tracking-[-0.025em] text-bone"
           />
           <Reveal delay={0.08}>
             <p className="mt-7 max-w-[44ch] text-lg leading-relaxed text-mute">{BODY_COPY}</p>

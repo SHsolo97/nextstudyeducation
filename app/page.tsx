@@ -8,6 +8,7 @@ import DisciplineMarquee from "@/components/sections/DisciplineMarquee";
 import TheShift from "@/components/sections/TheShift";
 import TheGap from "@/components/sections/TheGap";
 import WhyNextudy from "@/components/sections/WhyNextudy";
+import CtaRibbon from "@/components/sections/CtaRibbon";
 import Programs from "@/components/sections/Programs";
 import LearningJourney from "@/components/sections/LearningJourney";
 import Mentors from "@/components/sections/Mentors";
@@ -28,10 +29,11 @@ export default function Home() {
         <Recognition />
         <FlagshipProgram />
         <LearningJourney />
-        <DisciplineMarquee />
-        <TheShift />
         <TheGap />
         <WhyNextudy />
+        <TheShift />
+        <CtaRibbon />
+        <DisciplineMarquee />
         <Programs />
         <Mentors />
         <Outcomes />

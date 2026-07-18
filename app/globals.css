@@ -102,8 +102,11 @@ html.lenis body {
   font-family: var(--font-display);
   font-weight: 700;
   letter-spacing: -0.025em;
-  line-height: 0.95;
+  line-height: 1.05;
   text-wrap: balance;
+  /* small bottom buffer so descenders / rounded bottoms of large display
+     glyphs never get sliced by parent clips (line-mask, hero zoom, etc.) */
+  padding-bottom: 0.04em;
 }
 .eyebrow {
   font-family: var(--font-body);
@@ -113,15 +116,22 @@ html.lenis body {
   text-transform: uppercase;
 }
 
-/* Word/line reveal masks (used by GSAP SplitText) */
+/* Word/line reveal masks (used by GSAP SplitText).
+   Padding-bottom leaves headroom for descenders (y, g, p, q, j) and the
+   rounded bottoms of large display glyphs so they are not sliced by the
+   `overflow: hidden` clip used by SplitText line masks. */
 .line-mask {
   overflow: hidden;
   display: block;
-  padding-bottom: 0.04em;
+  padding-bottom: 0.14em;
 }
-/* small breathing room so descenders are not clipped by line masks */
 .split-line {
-  padding-bottom: 0.06em;
+  padding-bottom: 0.14em;
+}
+.reveal-up,
+.display {
+  /* extra safety net: keep descenders out of any neighbouring clip */
+  padding-bottom: 0.04em;
 }
 
 @keyframes scrollcue {

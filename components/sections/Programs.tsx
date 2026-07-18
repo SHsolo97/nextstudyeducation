@@ -178,7 +178,7 @@ export default function Programs() {
               <h2
                 ref={headline}
                 id="programs-title"
-                className="reveal-up mt-6 font-display text-[clamp(2.4rem,4.4vw,3.6rem)] font-bold leading-[0.98] tracking-[-0.025em] text-bone"
+                className="reveal-up mt-6 font-display text-[clamp(2.4rem,4.4vw,3.6rem)] font-bold leading-[1.02] tracking-[-0.025em] text-bone"
               >
                 Five ways in.
                 <br />

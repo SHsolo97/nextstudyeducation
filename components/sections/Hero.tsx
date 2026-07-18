@@ -119,7 +119,7 @@ export default function Hero() {
 
         <h1
           ref={headline}
-          className="reveal-up mx-auto mt-7 max-w-[18ch] font-display text-[clamp(2.55rem,6.6vw,6rem)] font-bold leading-[0.96] tracking-[-0.03em] text-bone"
+          className="reveal-up mx-auto mt-7 max-w-[18ch] font-display text-[clamp(2.55rem,6.6vw,6rem)] font-bold leading-[1.02] tracking-[-0.03em] text-bone"
         >
           {hero.headline.flatMap((line, i): React.ReactNode[] =>
             i === 0
