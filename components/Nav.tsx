@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import Logo from "./ui/Logo";
 import Button from "./ui/Button";
 import { nav } from "@/lib/content";
@@ -40,9 +41,9 @@ export default function Nav() {
           }`}
           style={{ maxWidth: "min(72rem, calc(100% - 1.5rem))" }}
         >
-          <a href="#top" aria-label="Nextudy home" className="shrink-0">
+          <Link href="/" aria-label="Nextudy home" className="shrink-0">
             <Logo height={26} priority />
-          </a>
+          </Link>
 
           <ul className="hidden items-center gap-1 md:flex">
             {nav.map((item) => (
@@ -59,7 +60,7 @@ export default function Nav() {
 
           <div className="flex items-center gap-2">
             <span className="hidden sm:inline-flex">
-              <Button href="#lead" magnetic showArrow={false} className="px-5 py-2.5 text-sm">
+              <Button href="/#lead" magnetic showArrow={false} className="px-5 py-2.5 text-sm">
                 Get the syllabus
               </Button>
             </span>
@@ -109,7 +110,7 @@ export default function Nav() {
           ))}
         </div>
         <div className="mt-auto p-7">
-          <Button href="#lead" className="w-full justify-center" onClick={() => setOpen(false)}>
+          <Button href="/#lead" className="w-full justify-center" onClick={() => setOpen(false)}>
             Get the course syllabus
           </Button>
         </div>

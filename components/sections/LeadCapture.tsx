@@ -2,7 +2,13 @@
 
 import { useReducer, useRef } from "react";
 import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
-import { lead, interestOptions, inquiryTypes, leadMagnet } from "@/lib/content";
+import {
+  businessInterestOptions,
+  lead,
+  interestOptions,
+  inquiryTypes,
+  leadMagnet,
+} from "@/lib/content";
 import Kicker from "../ui/Kicker";
 import TextReveal from "../ui/TextReveal";
 import Reveal from "../ui/Reveal";
@@ -54,6 +60,20 @@ const initialState: State = {
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "change":
+      if (action.field === "inquiryType") {
+        return {
+          ...state,
+          values: {
+            ...state.values,
+            inquiryType: action.value,
+            company: "",
+            firstName: "",
+            lastName: "",
+            interest: "",
+          },
+          errors: {},
+        };
+      }
       return {
         ...state,
         values: { ...state.values, [action.field]: action.value },
@@ -298,7 +318,6 @@ export default function LeadCapture() {
                     value={v.firstName}
                     onChange={set("firstName")}
                     error={state.errors.firstName}
-                    placeholder="Jane"
                     autoComplete="given-name"
                     disabled={submitting}
                   />
@@ -308,7 +327,6 @@ export default function LeadCapture() {
                     value={v.lastName}
                     onChange={set("lastName")}
                     error={state.errors.lastName}
-                    placeholder="Mathew"
                     autoComplete="family-name"
                     disabled={submitting}
                   />
@@ -322,7 +340,6 @@ export default function LeadCapture() {
                   value={v.company}
                   onChange={set("company")}
                   error={state.errors.company}
-                  placeholder="Your company"
                   autoComplete="organization"
                   disabled={submitting}
                 />
@@ -336,7 +353,6 @@ export default function LeadCapture() {
                 value={v.email}
                 onChange={set("email")}
                 error={state.errors.email}
-                placeholder="you@email.com"
                 autoComplete="email"
                 disabled={submitting}
               />
@@ -350,7 +366,6 @@ export default function LeadCapture() {
                 onChange={set("whatsapp")}
                 error={state.errors.whatsapp}
                 helper="Include your country code."
-                placeholder="+91 90000 00000"
                 autoComplete="tel"
                 disabled={submitting}
               />
@@ -362,7 +377,7 @@ export default function LeadCapture() {
                 onChange={set("interest")}
                 error={state.errors.interest}
                 placeholder="What are you interested in?"
-                options={interestOptions}
+                options={isBusiness ? businessInterestOptions : interestOptions}
                 disabled={submitting}
               />
 
@@ -373,7 +388,6 @@ export default function LeadCapture() {
                 value={v.message}
                 onChange={(val) => set("message")(val.slice(0, MESSAGE_MAX))}
                 error={state.errors.message}
-                placeholder="Anything that helps us point you the right way."
                 max={MESSAGE_MAX}
                 disabled={submitting}
               />

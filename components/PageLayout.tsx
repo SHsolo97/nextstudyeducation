@@ -1,12 +1,9 @@
-import Link from "next/link";
-import Logo from "@/components/ui/Logo";
 import Footer from "@/components/Footer";
+import Nav from "@/components/Nav";
 import Kicker from "@/components/ui/Kicker";
-import { ArrowRight } from "@/components/ui/icons";
 
-// Marketing-style page chrome shared by /about and /elevate. Quieter than the
-// homepage but still on-brand: sticky logo + back link, atmospheric bloom,
-// centered heading + intro, then the page body, then the standard footer.
+// Marketing-style page chrome shared by /about and /elevate, with the same
+// persistent navigation and footer as the homepage.
 
 export default function PageLayout({
   eyebrow,
@@ -21,23 +18,7 @@ export default function PageLayout({
 }) {
   return (
     <>
-      <header className="relative z-10 border-b border-line/60 bg-ink">
-        <div className="shell flex items-center justify-between py-5">
-          <Link href="/" aria-label="Nextudy home" className="inline-flex">
-            <Logo height={26} priority />
-          </Link>
-          <Link
-            href="/"
-            className="group inline-flex items-center gap-2 text-sm text-mute transition-colors duration-200 hover:text-bone"
-          >
-            <ArrowRight
-              size={16}
-              className="rotate-180 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-x-1"
-            />
-            Back to site
-          </Link>
-        </div>
-      </header>
+      <Nav />
 
       <main className="relative">
         <div
@@ -45,7 +26,7 @@ export default function PageLayout({
           aria-hidden="true"
         />
 
-        <div className="shell relative py-20 md:py-28">
+        <div className="shell relative pb-20 pt-32 md:pb-28 md:pt-40">
           <div className="mx-auto max-w-3xl">
             <Kicker>{eyebrow}</Kicker>
             <h1 className="display mt-5 text-[clamp(2.2rem,5.4vw,3.8rem)] text-bone">

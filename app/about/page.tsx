@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import PageLayout from "@/components/PageLayout";
 
 export const metadata: Metadata = {
@@ -24,28 +25,64 @@ export default function AboutPage() {
         career outcomes.
       </p>
 
-      <h3>Jassim Salam &middot; Founder &amp; Director</h3>
-      <p>
-        Jassim Salam is a Civil Engineering graduate from VIT University,
-        Vellore, with more than five years of professional experience as a BIM
-        Engineer and BIM Coordinator. Throughout his career, he has contributed
-        to projects and worked with consultants across South Asian regions,
-        including KEO International Consultants in Saudi Arabia and EKK
-        Infrastructure in India. At Nextudy, he leads business operations,
-        organizational management, and mentor coordination while ensuring that
-        every program aligns closely with industry needs and practical outcomes.
-      </p>
+      <div className="not-prose my-12 grid gap-8">
+        <article className="grid overflow-hidden rounded-3xl border border-line bg-ink-800/60 md:grid-cols-[16rem_1fr]">
+          <div className="relative aspect-[3/4] min-h-[22rem] md:aspect-auto">
+            <Image
+              src="/founders/JassimSalam.jpeg"
+              alt="Jassim Salam, Founder and Director of Nextudy"
+              fill
+              sizes="(min-width: 768px) 256px, calc(100vw - 40px)"
+              className="object-cover"
+            />
+          </div>
+          <div className="p-7 md:p-9">
+            <h3 className="font-display text-2xl font-semibold text-bone">
+              Jassim Salam
+            </h3>
+            <p className="mt-1 text-sm font-medium uppercase tracking-[0.14em] text-accent">
+              Founder &amp; Director
+            </p>
+            <p className="mt-5 leading-relaxed text-mute">
+              Jassim Salam is a Civil Engineering graduate from VIT University,
+              Vellore, with more than five years of professional experience as a BIM
+              Engineer and BIM Coordinator. Throughout his career, he has contributed
+              to projects and worked with consultants across South Asian regions,
+              including KEO International Consultants in Saudi Arabia and EKK
+              Infrastructure in India. At Nextudy, he leads business operations,
+              organizational management, and mentor coordination while ensuring that
+              every program aligns closely with industry needs and practical outcomes.
+            </p>
+          </div>
+        </article>
 
-      <h3>Fahd Ikbal &middot; Co-Founder</h3>
-      <p>
-        Fahd Ikbal is an MBA graduate with a strong interest in entrepreneurship,
-        business management, and building scalable systems. Prior to Nextudy, he
-        operated &ldquo;Fraternity,&rdquo; a digital freelancer network designed to
-        connect talented individuals with suitable opportunities in a localized
-        ecosystem. At Nextudy, he drives marketing initiatives and business
-        expansion strategies with the goal of growing meaningful learning
-        opportunities and building stronger industry collaborations.
-      </p>
+        <article className="grid overflow-hidden rounded-3xl border border-line bg-ink-800/60 md:grid-cols-[16rem_1fr]">
+          <div className="relative aspect-[3/4] min-h-[22rem] md:aspect-auto">
+            <Image
+              src="/founders/FahdIkbal.jpeg"
+              alt="Fahd Ikbal, Co-Founder of Nextudy"
+              fill
+              sizes="(min-width: 768px) 256px, calc(100vw - 40px)"
+              className="object-cover"
+            />
+          </div>
+          <div className="p-7 md:p-9">
+            <h3 className="font-display text-2xl font-semibold text-bone">Fahd Ikbal</h3>
+            <p className="mt-1 text-sm font-medium uppercase tracking-[0.14em] text-accent">
+              Co-Founder
+            </p>
+            <p className="mt-5 leading-relaxed text-mute">
+              Fahd Ikbal is an MBA graduate with a strong interest in entrepreneurship,
+              business management, and building scalable systems. Prior to Nextudy, he
+              operated &ldquo;Fraternity,&rdquo; a digital freelancer network designed to
+              connect talented individuals with suitable opportunities in a localized
+              ecosystem. At Nextudy, he drives marketing initiatives and business
+              expansion strategies with the goal of growing meaningful learning
+              opportunities and building stronger industry collaborations.
+            </p>
+          </div>
+        </article>
+      </div>
 
       <h2>What we do?</h2>
       <p>

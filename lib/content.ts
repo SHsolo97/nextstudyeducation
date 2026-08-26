@@ -19,11 +19,11 @@ export const brand = {
 export const nav = [
   { label: "About Us", href: "/about" },
   { label: "Nextudy Elevate", href: "/elevate" },
-  { label: "The shift", href: "#shift" },
-  { label: "Programs", href: "#programs" },
-  { label: "Mentors", href: "#mentors" },
-  { label: "Journey", href: "#journey" },
-  { label: "FAQ", href: "#faq" },
+  { label: "The shift", href: "/#shift" },
+  { label: "Programs", href: "/#programs" },
+  { label: "Mentors", href: "/#mentors" },
+  { label: "Journey", href: "/#journey" },
+  { label: "FAQ", href: "/#faq" },
 ];
 
 export const hero = {
@@ -430,6 +430,17 @@ export const inquiryTypes = [
 export const interestOptions: string[] = [
   ...programs.map((p) => p.name),
   "Not sure yet",
+];
+
+export const businessInterestOptions: string[] = [
+  "Corporate BIM Training",
+  "Employee Upskilling",
+  "Institutional BIM Training",
+  "Customized Training Program",
+  "Training Partnership",
+  "Academic Collaboration",
+  "Recruitment / Talent Development",
+  "Other",
 ];
 
 // Lead magnet delivered on successful form submission.

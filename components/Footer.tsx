@@ -26,7 +26,7 @@ export default function Footer() {
             {nav.map((item) => (
               <a
                 key={item.href}
-                href={`/${item.href}`}
+                href={item.href}
                 className="w-fit text-mute transition-colors duration-200 hover:text-bone"
               >
                 {item.label}

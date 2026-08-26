@@ -20,7 +20,16 @@ export default function Hero() {
   // Start the intro once the preloader signals it is done.
   useEffect(() => {
     if (play) return;
+
+    // On a return to the homepage the preloader is skipped in a layout effect,
+    // which can fire before this passive effect subscribes to the event. Read
+    // the persistent window flag first so that handoff cannot be missed.
     const on = () => setPlay(true);
+    if ((window as unknown as { __nxLoaded?: boolean }).__nxLoaded) {
+      const ready = window.setTimeout(on, 0);
+      return () => window.clearTimeout(ready);
+    }
+
     window.addEventListener("nx:loaded", on, { once: true });
     // Safety: never leave the hero hidden if the loaded signal is missed.
     const fallback = window.setTimeout(() => setPlay(true), 4000);

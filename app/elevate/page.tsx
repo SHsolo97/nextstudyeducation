@@ -1,19 +1,11 @@
 import type { Metadata } from "next";
+import ElevateLeadForm from "@/components/ElevateLeadForm";
 import PageLayout from "@/components/PageLayout";
-import RazorpayButton from "@/components/RazorpayButton";
 
 export const metadata: Metadata = {
   title: "Nextudy Elevate — Nextudy",
   description:
-    "Nextudy Elevate is a members-only learning ecosystem that rewards your ambition with year-round benefits, discounts, and career support.",
-};
-
-const PRICE = {
-  // Annual price in INR (paise for Razorpay).
-  currentInr: 5299,
-  strikeInr: 9199,
-  rzpAmountPaise: 529900,
-  rzpPlanId: process.env.NEXT_PUBLIC_RAZORPAY_PLAN_ELEVATE ?? "",
+    "Nextudy Elevate is a members-only learning ecosystem with year-round learning benefits and career support.",
 };
 
 const BENEFITS = [
@@ -26,13 +18,6 @@ const BENEFITS = [
   "Attend exclusive career webinars provided by us once in two months.",
   "Access to Nextudy Elevate members-only networking community.",
 ];
-
-const INR = (n: number) =>
-  new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(n);
 
 export default function ElevatePage() {
   return (
@@ -58,8 +43,8 @@ export default function ElevatePage() {
 
       <h2>Benefits of Joining Nextudy Elevate</h2>
       <ul>
-        {BENEFITS.map((b) => (
-          <li key={b}>{b}</li>
+        {BENEFITS.map((benefit) => (
+          <li key={benefit}>{benefit}</li>
         ))}
       </ul>
 
@@ -69,38 +54,7 @@ export default function ElevatePage() {
         professionals who have already chosen to stay future-ready.
       </p>
 
-      {/* Pricing card */}
-      <div className="not-prose my-12 flex flex-col items-center gap-6 rounded-3xl border border-line bg-ink-800/60 p-8 backdrop-blur md:flex-row md:items-end md:justify-between md:p-10">
-        <div className="text-center md:text-left">
-          <p className="font-display text-sm font-medium uppercase tracking-[0.2em] text-faint">
-            Annual membership
-          </p>
-          <div className="mt-3 flex items-baseline justify-center gap-3 md:justify-start">
-            <span className="font-display text-5xl font-bold tracking-tight text-bone md:text-6xl">
-              {INR(PRICE.currentInr)}
-            </span>
-            <span className="font-display text-base text-mute">/ year</span>
-          </div>
-          <p className="mt-2 text-sm text-mute">
-            <span className="text-faint line-through">
-              {INR(PRICE.strikeInr)} / year
-            </span>{" "}
-            &middot; Launch pricing for our first cohort
-          </p>
-        </div>
-
-        <RazorpayButton
-          amount={PRICE.rzpAmountPaise}
-          planId={PRICE.rzpPlanId}
-          label={`Join Nextudy Elevate — ${INR(PRICE.currentInr)} / year`}
-        />
-      </div>
-
-      <p className="text-sm text-faint">
-        Payments are processed securely by Razorpay. You can cancel your
-        membership at any time; benefits remain active until the end of the
-        current billing cycle.
-      </p>
+      <ElevateLeadForm />
     </PageLayout>
   );
 }
