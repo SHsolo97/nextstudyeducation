@@ -46,12 +46,15 @@ export default function Footer() {
             >
               {brand.email}
             </a>
-            <a
-              href={`tel:${brand.phone.replace(/\s/g, "")}`}
-              className="w-fit text-mute transition-colors duration-200 hover:text-bone"
-            >
-              {brand.phone}
-            </a>
+            {brand.phones.map((phone) => (
+              <a
+                key={phone}
+                href={`tel:${phone.replace(/\s/g, "")}`}
+                className="w-fit text-mute transition-colors duration-200 hover:text-bone"
+              >
+                {phone}
+              </a>
+            ))}
             <div className="mt-3 flex items-center gap-3">
               {brand.socials.map((s) => (
                 <a

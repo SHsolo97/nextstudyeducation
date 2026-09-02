@@ -8,7 +8,7 @@ export const brand = {
   wordmark: "nextudy",
   tagline: "Skill up now",
   email: "info@nextudyeducation.com",
-  phone: "+91 95008 32464",
+  phones: ["+91 95008 32464", "+91 75111 33361"],
   socials: [
     { label: "LinkedIn", href: "https://www.linkedin.com/company/nextudy/" },
     { label: "Instagram", href: "https://www.instagram.com/nextudyeducation/" },
@@ -19,7 +19,7 @@ export const brand = {
 export const nav = [
   { label: "About Us", href: "/about" },
   { label: "Nextudy Elevate", href: "/elevate" },
-  { label: "Blogs", href: "/blogs" },
+  { label: "Articles", href: "/blogs" },
   { label: "The shift", href: "/#shift" },
   { label: "Programs", href: "/#programs" },
   { label: "Mentors", href: "/#mentors" },
