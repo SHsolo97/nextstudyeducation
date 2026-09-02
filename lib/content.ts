@@ -19,6 +19,7 @@ export const brand = {
 export const nav = [
   { label: "About Us", href: "/about" },
   { label: "Nextudy Elevate", href: "/elevate" },
+  { label: "Blogs", href: "/blogs" },
   { label: "The shift", href: "/#shift" },
   { label: "Programs", href: "/#programs" },
   { label: "Mentors", href: "/#mentors" },
@@ -429,6 +430,7 @@ export const inquiryTypes = [
 
 export const interestOptions: string[] = [
   ...programs.map((p) => p.name),
+  "Nextudy Elevate",
   "Not sure yet",
 ];
 
@@ -445,7 +447,6 @@ export const businessInterestOptions: string[] = [
 
 // Lead magnet delivered on successful form submission.
 export const leadMagnet = {
-  href: "/bim-foundation-syllabus.pdf",
-  fileName: "Nextudy-BIM-Foundation-Bridge-Syllabus.pdf",
+  href: "https://drive.google.com/file/d/1PpaYXyW1erN6Ka1riqfqpMU8LKLYAEXw/view?usp=sharing",
   title: "BIM Foundation Bridge Course syllabus",
 };

@@ -45,7 +45,7 @@ export default function Nav() {
             <Logo height={26} priority />
           </Link>
 
-          <ul className="hidden items-center gap-1 md:flex">
+          <ul className="hidden items-center gap-1 xl:flex">
             {nav.map((item) => (
               <li key={item.href}>
                 <a
@@ -69,7 +69,7 @@ export default function Nav() {
               onClick={() => setOpen((v) => !v)}
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-line/70 text-bone transition-colors hover:border-accent/60 md:hidden"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-line/70 text-bone transition-colors hover:border-accent/60 xl:hidden"
             >
               <span className="relative block h-3 w-[18px]">
                 <span
@@ -90,7 +90,7 @@ export default function Nav() {
 
       {/* Mobile menu */}
       <div
-        className={`fixed inset-0 z-[99] flex flex-col bg-ink/98 transition-[opacity,visibility] duration-400 md:hidden ${
+        className={`fixed inset-0 z-[99] flex flex-col bg-ink/98 transition-[opacity,visibility] duration-400 xl:hidden ${
           open ? "visible opacity-100" : "invisible opacity-0"
         }`}
       >

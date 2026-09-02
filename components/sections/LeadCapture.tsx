@@ -15,6 +15,7 @@ import Reveal from "../ui/Reveal";
 import Magnetic from "../ui/Magnetic";
 import BlueprintBackdrop from "../visuals/BlueprintBackdrop";
 import { Check, Spinner, ArrowRight } from "../ui/icons";
+import { submitLead } from "@/lib/leads";
 
 // ── Conversion moment. Dark register: a trustworthy inquiry form that, once
 // completed, delivers the BIM Foundation syllabus as a lead magnet. ───────────
@@ -26,35 +27,45 @@ type FieldName =
   | "inquiryType"
   | "firstName"
   | "lastName"
+  | "contactName"
   | "company"
   | "email"
   | "whatsapp"
   | "interest"
+  | "businessInterests"
+  | "teamSize"
   | "message";
-type Values = Record<FieldName, string>;
+type TextFieldName = Exclude<FieldName, "businessInterests">;
+type Values = Record<TextFieldName, string> & { businessInterests: string[] };
 type Errors = Partial<Record<FieldName, string>>;
 type Status = "idle" | "submitting" | "success";
 
-type State = { values: Values; errors: Errors; status: Status };
+type State = { values: Values; errors: Errors; status: Status; submitError: string };
 type Action =
-  | { type: "change"; field: FieldName; value: string }
+  | { type: "change"; field: TextFieldName; value: string }
+  | { type: "toggleBusinessInterest"; value: string }
   | { type: "errors"; errors: Errors }
   | { type: "submitting" }
-  | { type: "success" };
+  | { type: "success" }
+  | { type: "failure"; message: string };
 
 const initialState: State = {
   values: {
     inquiryType: "",
     firstName: "",
     lastName: "",
+    contactName: "",
     company: "",
     email: "",
     whatsapp: "",
     interest: "",
+    businessInterests: [],
+    teamSize: "",
     message: "",
   },
   errors: {},
   status: "idle",
+  submitError: "",
 };
 
 function reducer(state: State, action: Action): State {
@@ -69,22 +80,43 @@ function reducer(state: State, action: Action): State {
             company: "",
             firstName: "",
             lastName: "",
+            contactName: "",
             interest: "",
+            businessInterests: [],
+            teamSize: "",
           },
           errors: {},
+          submitError: "",
         };
       }
       return {
         ...state,
         values: { ...state.values, [action.field]: action.value },
         errors: { ...state.errors, [action.field]: undefined },
+        submitError: "",
       };
+    case "toggleBusinessInterest": {
+      const selected = state.values.businessInterests.includes(action.value);
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          businessInterests: selected
+            ? state.values.businessInterests.filter((item) => item !== action.value)
+            : [...state.values.businessInterests, action.value],
+        },
+        errors: { ...state.errors, businessInterests: undefined },
+        submitError: "",
+      };
+    }
     case "errors":
       return { ...state, errors: action.errors };
     case "submitting":
-      return { ...state, status: "submitting", errors: {} };
+      return { ...state, status: "submitting", errors: {}, submitError: "" };
     case "success":
       return { ...state, status: "success" };
+    case "failure":
+      return { ...state, status: "idle", submitError: action.message };
     default:
       return state;
   }
@@ -100,7 +132,10 @@ function validate(v: Values): Errors {
     if (!v.firstName.trim()) e.firstName = "Required.";
     if (!v.lastName.trim()) e.lastName = "Required.";
   } else if (v.inquiryType === "Business") {
+    if (!v.contactName.trim()) e.contactName = "Tell us who we should contact.";
     if (!v.company.trim()) e.company = "Tell us your company name.";
+    if (!v.businessInterests.length) e.businessInterests = "Select at least one program.";
+    if (!v.teamSize) e.teamSize = "Select your team size.";
   }
 
   if (!v.email.trim()) e.email = "We need an email to send the syllabus.";
@@ -110,7 +145,9 @@ function validate(v: Values): Errors {
   if (!v.whatsapp.trim()) e.whatsapp = "A number a mentor can reach you on.";
   else if (digits.length < 7 || digits.length > 15) e.whatsapp = "That number doesn't look complete.";
 
-  if (!v.interest) e.interest = "Pick what you're interested in.";
+  if (v.inquiryType === "Individual" && !v.interest) {
+    e.interest = "Pick what you're interested in.";
+  }
 
   if (v.message.length > MESSAGE_MAX) e.message = `Keep it under ${MESSAGE_MAX} characters.`;
   return e;
@@ -121,25 +158,34 @@ function focusOrder(v: Values): FieldName[] {
     v.inquiryType === "Individual"
       ? ["inquiryType", "firstName", "lastName"]
       : v.inquiryType === "Business"
-        ? ["inquiryType", "company"]
+        ? ["inquiryType", "contactName", "company"]
         : ["inquiryType"];
-  return [...names, "email", "whatsapp", "interest", "message"];
+  return v.inquiryType === "Business"
+    ? [...names, "email", "whatsapp", "businessInterests", "teamSize", "message"]
+    : [...names, "email", "whatsapp", "interest", "message"];
 }
 
 const TRUST_LINE = "No pressure, no script.";
 const BODY_COPY = lead.copy.replace(TRUST_LINE, "").trim();
+const TEAM_SIZES = [
+  "1–5 employees",
+  "6–15 employees",
+  "16–50 employees",
+  "51–200 employees",
+  "201+ employees",
+];
 
-function triggerDownload() {
+function openSyllabus() {
   const a = document.createElement("a");
   a.href = leadMagnet.href;
-  a.download = leadMagnet.fileName;
-  a.rel = "noopener";
+  a.target = "_blank";
+  a.rel = "noopener noreferrer";
   document.body.appendChild(a);
   a.click();
   a.remove();
 }
 
-export default function LeadCapture() {
+export default function LeadCapture({ embedded = false }: { embedded?: boolean }) {
   const root = useRef<HTMLElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const successHeading = useRef<HTMLHeadingElement>(null);
@@ -147,10 +193,10 @@ export default function LeadCapture() {
 
   const submitting = state.status === "submitting";
   const v = state.values;
-  const set = (field: FieldName) => (value: string) => dispatch({ type: "change", field, value });
+  const set = (field: TextFieldName) => (value: string) => dispatch({ type: "change", field, value });
   const isIndividual = v.inquiryType === "Individual";
   const isBusiness = v.inquiryType === "Business";
-  const leadName = isBusiness ? v.company.trim() : v.firstName.trim();
+  const leadName = isBusiness ? v.contactName.trim().split(/\s+/)[0] : v.firstName.trim();
 
   async function handleSubmit(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
@@ -160,15 +206,49 @@ export default function LeadCapture() {
     if (Object.values(errors).some(Boolean)) {
       dispatch({ type: "errors", errors });
       const first = focusOrder(v).find((f) => errors[f]);
-      if (first) formRef.current?.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
+      if (first) {
+        requestAnimationFrame(() =>
+          formRef.current?.querySelector<HTMLElement>(`[name="${first}"]`)?.focus(),
+        );
+      }
       return;
     }
 
     dispatch({ type: "submitting" });
-    // Simulated async submit — swap for the real endpoint later.
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    triggerDownload(); // deliver the lead magnet
-    dispatch({ type: "success" });
+    try {
+      await submitLead(
+        isBusiness
+          ? {
+              inquiryType: "Business",
+              contactName: v.contactName,
+              companyName: v.company,
+              workEmail: v.email,
+              phone: v.whatsapp,
+              programsOfInterest: v.businessInterests,
+              teamSize: v.teamSize,
+              requirements: v.message,
+            }
+          : {
+              inquiryType: "Individual",
+              firstName: v.firstName,
+              lastName: v.lastName,
+              email: v.email,
+              whatsapp: v.whatsapp,
+              productInterest: v.interest,
+              needs: v.message,
+            },
+      );
+      openSyllabus();
+      dispatch({ type: "success" });
+    } catch (error) {
+      dispatch({
+        type: "failure",
+        message:
+          error instanceof Error
+            ? error.message
+            : "We couldn't send your inquiry. Please try again.",
+      });
+    }
   }
 
   // Form entrance: the card rises, then the fields stagger in beneath it.
@@ -233,32 +313,52 @@ export default function LeadCapture() {
   );
 
   return (
-    <section ref={root} id="lead" className="relative overflow-hidden bg-ink py-24 md:py-36">
-      <div className="bloom right-[-8%] top-[8%] h-[440px] w-[560px] opacity-40" />
-      <BlueprintBackdrop fade="top" className="opacity-40" />
+    <section
+      ref={root}
+      id={embedded ? "elevate-inquiry" : "lead"}
+      className={
+        embedded
+          ? "not-prose my-12 scroll-mt-28"
+          : "relative overflow-hidden bg-ink py-24 md:py-36"
+      }
+    >
+      {!embedded ? (
+        <>
+          <div className="bloom right-[-8%] top-[8%] h-[440px] w-[560px] opacity-40" />
+          <BlueprintBackdrop fade="top" className="opacity-40" />
+        </>
+      ) : null}
 
-      <div className="shell relative z-10 grid items-start gap-14 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:gap-20">
+      <div
+        className={
+          embedded
+            ? "relative z-10"
+            : "shell relative z-10 grid items-start gap-14 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:gap-20"
+        }
+      >
         {/* LEFT — the invitation */}
-        <div className="relative">
-          <Reveal>
-            <Kicker>{lead.eyebrow}</Kicker>
-          </Reveal>
-          <TextReveal
-            lines={lead.headline}
-            trigger
-            as="h2"
-            className="mt-6 font-display text-[clamp(2.4rem,5.2vw,4.2rem)] font-bold leading-[1.02] tracking-[-0.025em] text-bone"
-          />
-          <Reveal delay={0.08}>
-            <p className="mt-7 max-w-[44ch] text-lg leading-relaxed text-mute">{BODY_COPY}</p>
-            <div className="mt-8 inline-flex items-center gap-3 text-faint">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full border border-line text-accent">
-                <Check size={14} />
-              </span>
-              <span className="text-sm tracking-wide">{TRUST_LINE}</span>
-            </div>
-          </Reveal>
-        </div>
+        {!embedded ? (
+          <div className="relative">
+            <Reveal>
+              <Kicker>{lead.eyebrow}</Kicker>
+            </Reveal>
+            <TextReveal
+              lines={lead.headline}
+              trigger
+              as="h2"
+              className="mt-6 font-display text-[clamp(2.4rem,5.2vw,4.2rem)] font-bold leading-[1.02] tracking-[-0.025em] text-bone"
+            />
+            <Reveal delay={0.08}>
+              <p className="mt-7 max-w-[44ch] text-lg leading-relaxed text-mute">{BODY_COPY}</p>
+              <div className="mt-8 inline-flex items-center gap-3 text-faint">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full border border-line text-accent">
+                  <Check size={14} />
+                </span>
+                <span className="text-sm tracking-wide">{TRUST_LINE}</span>
+              </div>
+            </Reveal>
+          </div>
+        ) : null}
 
         {/* RIGHT — the form card */}
         <div className="lc-card reveal-up relative rounded-3xl border border-line bg-ink-800 p-8 sm:p-10">
@@ -279,15 +379,16 @@ export default function LeadCapture() {
                 {leadName ? `You're all set, ${leadName}.` : "You're all set."}
               </h3>
               <p className="lc-success-line mt-3 max-w-[36ch] leading-relaxed text-mute">
-                Your {leadMagnet.title} is downloading now. A mentor will reach out on WhatsApp to
+                Your {leadMagnet.title} is opening in a new tab. A mentor will reach out on WhatsApp to
                 pick up the conversation.
               </p>
               <a
                 href={leadMagnet.href}
-                download={leadMagnet.fileName}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="lc-success-line group mt-8 inline-flex items-center gap-2.5 rounded-full bg-accent px-6 py-3.5 font-display text-[0.95rem] font-medium tracking-tight text-accent-ink transition-[transform,background-color] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-accent-bright active:scale-[0.97]"
               >
-                Download the syllabus again
+                Open the syllabus again
                 <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
               </a>
             </div>
@@ -334,20 +435,31 @@ export default function LeadCapture() {
               )}
 
               {isBusiness && (
-                <TextField
-                  id="company"
-                  label="Company name"
-                  value={v.company}
-                  onChange={set("company")}
-                  error={state.errors.company}
-                  autoComplete="organization"
-                  disabled={submitting}
-                />
+                <div className="lc-field grid gap-5 sm:grid-cols-2">
+                  <TextField
+                    id="contactName"
+                    label="Contact name"
+                    value={v.contactName}
+                    onChange={set("contactName")}
+                    error={state.errors.contactName}
+                    autoComplete="name"
+                    disabled={submitting}
+                  />
+                  <TextField
+                    id="company"
+                    label="Company name"
+                    value={v.company}
+                    onChange={set("company")}
+                    error={state.errors.company}
+                    autoComplete="organization"
+                    disabled={submitting}
+                  />
+                </div>
               )}
 
               <TextField
                 id="email"
-                label="Email address"
+                label={isBusiness ? "Work email" : "Email address"}
                 type="email"
                 inputMode="email"
                 value={v.email}
@@ -359,7 +471,7 @@ export default function LeadCapture() {
 
               <TextField
                 id="whatsapp"
-                label="WhatsApp number"
+                label={isBusiness ? "Phone / WhatsApp" : "WhatsApp number"}
                 type="tel"
                 inputMode="tel"
                 value={v.whatsapp}
@@ -370,20 +482,45 @@ export default function LeadCapture() {
                 disabled={submitting}
               />
 
-              <SelectField
-                id="interest"
-                label="Product / service interest"
-                value={v.interest}
-                onChange={set("interest")}
-                error={state.errors.interest}
-                placeholder="What are you interested in?"
-                options={isBusiness ? businessInterestOptions : interestOptions}
-                disabled={submitting}
-              />
+              {isIndividual && (
+                <SelectField
+                  id="interest"
+                  label="Product / service interest"
+                  value={v.interest}
+                  onChange={set("interest")}
+                  error={state.errors.interest}
+                  placeholder="What are you interested in?"
+                  options={interestOptions}
+                  disabled={submitting}
+                />
+              )}
+
+              {isBusiness && (
+                <>
+                  <CheckboxGroup
+                    label="Programs of interest"
+                    options={businessInterestOptions}
+                    selected={v.businessInterests}
+                    onToggle={(value) => dispatch({ type: "toggleBusinessInterest", value })}
+                    error={state.errors.businessInterests}
+                    disabled={submitting}
+                  />
+                  <SelectField
+                    id="teamSize"
+                    label="Team size"
+                    value={v.teamSize}
+                    onChange={set("teamSize")}
+                    error={state.errors.teamSize}
+                    placeholder="Select your team size"
+                    options={TEAM_SIZES}
+                    disabled={submitting}
+                  />
+                </>
+              )}
 
               <TextareaField
                 id="message"
-                label="Tell us more about your needs"
+                label={isBusiness ? "Training requirements" : "Tell us more about your needs"}
                 optional
                 value={v.message}
                 onChange={(val) => set("message")(val.slice(0, MESSAGE_MAX))}
@@ -416,6 +553,11 @@ export default function LeadCapture() {
                     )}
                   </button>
                 </Magnetic>
+                {state.submitError ? (
+                  <p role="alert" className="mt-3 text-center text-sm text-orange-300">
+                    {state.submitError}
+                  </p>
+                ) : null}
                 <p className="mt-3 text-center text-xs text-faint">
                   We&rsquo;ll only use your details to send the syllabus and arrange a callback.
                 </p>
@@ -477,7 +619,7 @@ function TextField({
   inputMode,
   disabled,
 }: {
-  id: FieldName;
+  id: TextFieldName;
   label: string;
   type?: string;
   value: string;
@@ -524,7 +666,7 @@ function TextareaField({
   optional,
   disabled,
 }: {
-  id: FieldName;
+  id: TextFieldName;
   label: string;
   value: string;
   onChange: (value: string) => void;
@@ -576,7 +718,7 @@ function SelectField({
   options,
   disabled,
 }: {
-  id: FieldName;
+  id: TextFieldName;
   label: string;
   value: string;
   onChange: (value: string) => void;
@@ -619,5 +761,64 @@ function SelectField({
       </div>
       <HelpText id={helpId} error={error} helper={helper} />
     </div>
+  );
+}
+
+function CheckboxGroup({
+  label,
+  options,
+  selected,
+  onToggle,
+  error,
+  disabled,
+}: {
+  label: string;
+  options: string[];
+  selected: string[];
+  onToggle: (value: string) => void;
+  error?: string;
+  disabled?: boolean;
+}) {
+  const helpId = "lead-businessInterests-help";
+
+  return (
+    <fieldset className="lc-field flex flex-col gap-2" aria-describedby={helpId}>
+      <legend className="font-display text-sm font-medium text-bone">{label}</legend>
+      <p className="text-xs text-faint">Choose every option that applies.</p>
+      <div className="mt-1 grid gap-2 sm:grid-cols-2">
+        {options.map((option) => {
+          const checked = selected.includes(option);
+          return (
+            <label
+              key={option}
+              className={`flex cursor-pointer items-start gap-3 rounded-xl border px-3.5 py-3 text-sm leading-snug transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent/40 ${
+                checked
+                  ? "border-accent/50 bg-accent/10 text-bone"
+                  : "border-line bg-ink-700 text-mute hover:border-accent/30"
+              } ${disabled ? "cursor-not-allowed opacity-60" : ""}`}
+            >
+              <input
+                type="checkbox"
+                name="businessInterests"
+                value={option}
+                checked={checked}
+                onChange={() => onToggle(option)}
+                disabled={disabled}
+                className="sr-only"
+              />
+              <span
+                className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
+                  checked ? "border-accent bg-accent text-accent-ink" : "border-line"
+                }`}
+              >
+                {checked ? <Check size={12} /> : null}
+              </span>
+              <span>{option}</span>
+            </label>
+          );
+        })}
+      </div>
+      <HelpText id={helpId} error={error} />
+    </fieldset>
   );
 }
